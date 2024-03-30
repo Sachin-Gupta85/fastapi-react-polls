@@ -1,0 +1,16 @@
+# Boots MongoDB + the FastAPI server. Run the React client locally with:
+#   cd client && npm install && npm run dev   (proxies /api -> localhost:8000)
+services:
+  mongo:
+    image: mongo:7
+    ports: ["27017:27017"]
+    volumes: ["mongo_data:/data/db"]
+  server:
+    build: ./server
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DB: pollsdb
+    ports: ["8000:8000"]
+    depends_on: [mongo]
+volumes:
+  mongo_data:
